@@ -1,0 +1,37 @@
+name: test_lab
+
+mgmt:
+  network: mgmt_intf
+  bridge: mgmt_bridge
+  ipv4-subnet: 198.18.128.0/18
+  ipv4-gw: 198.18.130.5
+
+topology:
+  kinds:
+    ceos:
+      kind: ceos
+      image: artifactory.devhub-cloud.cisco.com/asp-container-lab-docker/ceos:4.33.0F
+      env:
+        CLAB_MGMT_VRF: Mgmt-intf
+        
+    xrd:
+      kind: cisco_xrd
+      image: ${XRD_IMAGE:=ios-xr/xrd-control-plane}:${XRD_VERSION:=24.3.1}
+      env:
+        CLAB_MGMT_VRF: Mgmt-intf
+        IPv4_GW: 198.18.128.1
+
+  nodes:
+    R1:
+      kind: xrd
+      startup-config: xrd_config.cfg
+      mgmt-ipv4: 198.18.140.10
+
+    R2:
+      kind: ceos
+      startup-config: ceos.cfg
+      mgmt-ipv4: 198.18.140.11
+
+
+  links:
+    - endpoints: ["R1:Gi0-0-0-0", "R2:eth1"]
