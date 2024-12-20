@@ -24,12 +24,12 @@ topology:
   nodes:
     R1:
       kind: xrd
-      startup-config: xrd_config.cfg
+      startup-config: configs/xrd_config.cfg
       mgmt-ipv4: 198.18.140.10
 
     R2:
       kind: ceos
-      startup-config: ceos.cfg
+      startup-config: configs/ceos.cfg
       mgmt-ipv4: 198.18.140.11
 
 
